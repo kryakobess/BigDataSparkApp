@@ -1,0 +1,231 @@
+{
+  "experiment_timestamp": "2026-04-05T15:56:49",
+  "app_name": "NYC Taxi Optimized 3DN",
+  "input_path": "hdfs://namenode:9000/data/nyc_taxi/yellow_tripdata_2016-01.csv",
+  "spark_config": {
+    "executor_memory": "1g",
+    "driver_memory": "1g",
+    "shuffle_partitions": 16,
+    "target_partitions": 12,
+    "log_level": "ERROR",
+    "adaptive_query_execution": true
+  },
+  "total_duration_sec": 139.154,
+  "peak_driver_ram_mb": 38.76,
+  "steps": [
+    {
+      "step": "read_dataset",
+      "duration_sec": 41.059,
+      "driver_ram_mb": 38.01,
+      "finished_at": "2026-04-05T15:55:13"
+    },
+    {
+      "step": "prepare_dataset",
+      "duration_sec": 11.58,
+      "driver_ram_mb": 38.01,
+      "finished_at": "2026-04-05T15:55:24"
+    },
+    {
+      "step": "optimize_dataset",
+      "duration_sec": 76.025,
+      "driver_ram_mb": 38.01,
+      "finished_at": "2026-04-05T15:56:41"
+    },
+    {
+      "step": "collect_metrics",
+      "duration_sec": 8.948,
+      "driver_ram_mb": 38.76,
+      "finished_at": "2026-04-05T15:56:49"
+    }
+  ],
+  "result_metrics": {
+    "total_rows_after_cleanup": 10837367,
+    "pickup_location_dimension": "pickup_zone_approx",
+    "distance_and_fare_stats": {
+      "avg_trip_distance": 4.676249830793573,
+      "min_trip_distance": 0.01,
+      "max_trip_distance": 8000010.0,
+      "avg_fare_amount": 12.445718326231834
+    },
+    "rides_by_passenger_count": [
+      {
+        "passenger_count": 1,
+        "trip_count": 7671992
+      },
+      {
+        "passenger_count": 2,
+        "trip_count": 1553805
+      },
+      {
+        "passenger_count": 3,
+        "trip_count": 434595
+      },
+      {
+        "passenger_count": 4,
+        "trip_count": 209644
+      },
+      {
+        "passenger_count": 5,
+        "trip_count": 599093
+      },
+      {
+        "passenger_count": 6,
+        "trip_count": 368200
+      },
+      {
+        "passenger_count": 7,
+        "trip_count": 10
+      },
+      {
+        "passenger_count": 8,
+        "trip_count": 13
+      },
+      {
+        "passenger_count": 9,
+        "trip_count": 15
+      }
+    ],
+    "rides_by_pickup_hour": [
+      {
+        "pickup_hour": 18,
+        "trip_count": 688327
+      },
+      {
+        "pickup_hour": 19,
+        "trip_count": 679412
+      },
+      {
+        "pickup_hour": 20,
+        "trip_count": 621049
+      },
+      {
+        "pickup_hour": 21,
+        "trip_count": 604714
+      },
+      {
+        "pickup_hour": 17,
+        "trip_count": 588126
+      },
+      {
+        "pickup_hour": 22,
+        "trip_count": 577991
+      },
+      {
+        "pickup_hour": 15,
+        "trip_count": 560359
+      },
+      {
+        "pickup_hour": 14,
+        "trip_count": 559322
+      },
+      {
+        "pickup_hour": 12,
+        "trip_count": 532453
+      },
+      {
+        "pickup_hour": 13,
+        "trip_count": 528737
+      },
+      {
+        "pickup_hour": 16,
+        "trip_count": 507745
+      },
+      {
+        "pickup_hour": 11,
+        "trip_count": 499929
+      },
+      {
+        "pickup_hour": 9,
+        "trip_count": 489410
+      },
+      {
+        "pickup_hour": 8,
+        "trip_count": 488999
+      },
+      {
+        "pickup_hour": 23,
+        "trip_count": 478296
+      },
+      {
+        "pickup_hour": 10,
+        "trip_count": 478119
+      },
+      {
+        "pickup_hour": 7,
+        "trip_count": 402210
+      },
+      {
+        "pickup_hour": 0,
+        "trip_count": 392869
+      },
+      {
+        "pickup_hour": 1,
+        "trip_count": 297619
+      },
+      {
+        "pickup_hour": 6,
+        "trip_count": 234198
+      },
+      {
+        "pickup_hour": 2,
+        "trip_count": 226951
+      },
+      {
+        "pickup_hour": 3,
+        "trip_count": 167059
+      },
+      {
+        "pickup_hour": 4,
+        "trip_count": 123600
+      },
+      {
+        "pickup_hour": 5,
+        "trip_count": 109873
+      }
+    ],
+    "top_pickup_locations": [
+      {
+        "pickup_zone_approx": "-73.99",
+        "trip_count": 2489521
+      },
+      {
+        "pickup_zone_approx": "-73.98",
+        "trip_count": 2399068
+      },
+      {
+        "pickup_zone_approx": "-73.97",
+        "trip_count": 1434412
+      },
+      {
+        "pickup_zone_approx": "-74.0",
+        "trip_count": 1200481
+      },
+      {
+        "pickup_zone_approx": "-73.96",
+        "trip_count": 1023119
+      },
+      {
+        "pickup_zone_approx": "-74.01",
+        "trip_count": 668356
+      },
+      {
+        "pickup_zone_approx": "-73.95",
+        "trip_count": 656038
+      },
+      {
+        "pickup_zone_approx": "0.0",
+        "trip_count": 158434
+      },
+      {
+        "pickup_zone_approx": "-73.87",
+        "trip_count": 149382
+      },
+      {
+        "pickup_zone_approx": "-73.78",
+        "trip_count": 144141
+      }
+    ],
+    "storage_level": "MEMORY_AND_DISK",
+    "target_partitions": 12
+  }
+}

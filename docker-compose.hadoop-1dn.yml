@@ -1,0 +1,107 @@
+services:
+  namenode:
+    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+    container_name: hadoop-namenode
+    hostname: namenode
+    restart: unless-stopped
+    ports:
+      - "9870:9870"
+      - "9000:9000"
+    environment:
+      CLUSTER_NAME: bigdata-lab-1dn
+      CORE_CONF_fs_defaultFS: hdfs://namenode:9000
+      HDFS_CONF_dfs_replication: 1
+      HDFS_CONF_dfs_blocksize: 134217728 #128 mb
+      HDFS_CONF_dfs_namenode_datanode_registration_ip___hostname___check: "false"
+    volumes:
+      - namenode-data:/hadoop/dfs/name
+      - ./yellow_tripdata_2016-01.csv:/opt/app/yellow_tripdata_2016-01.csv:ro
+    mem_limit: 1024m
+    networks:
+      - hadoop-spark-net
+    healthcheck:
+      test: ["CMD-SHELL", "hdfs dfsadmin -report >/dev/null 2>&1 || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 10
+      start_period: 40s
+
+  datanode1:
+    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+    container_name: hadoop-datanode1
+    hostname: datanode1
+    restart: unless-stopped
+    depends_on:
+      - namenode
+    ports:
+      - "9864:9864"
+    environment:
+      CLUSTER_NAME: bigdata-lab-1dn
+      CORE_CONF_fs_defaultFS: hdfs://namenode:9000
+      SERVICE_PRECONDITION: namenode:9870
+      HDFS_CONF_dfs_replication: 1
+      HDFS_CONF_dfs_blocksize: 134217728 #128 mb
+    volumes:
+      - datanode1-data:/hadoop/dfs/data
+    mem_limit: 1536m
+    networks:
+      - hadoop-spark-net
+
+  spark-master:
+    build:
+      context: .
+      dockerfile: docker/spark/Dockerfile
+    image: bigdatasparkapp/spark:3.5.1-psutil
+    container_name: spark-master
+    hostname: spark-master
+    restart: unless-stopped
+    depends_on:
+      - namenode
+      - datanode1
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+    environment:
+      SPARK_MODE: master
+      SPARK_MASTER_HOST: spark-master
+      SPARK_MASTER_PORT: 7077
+      SPARK_MASTER_WEBUI_PORT: 8080
+      SPARK_NO_DAEMONIZE: "true"
+    volumes:
+      - ./:/opt/app
+    mem_limit: 1536m
+    networks:
+      - hadoop-spark-net
+
+  spark-worker:
+    build:
+      context: .
+      dockerfile: docker/spark/Dockerfile
+    image: bigdatasparkapp/spark:3.5.1-psutil
+    container_name: spark-worker
+    hostname: spark-worker
+    restart: unless-stopped
+    depends_on:
+      - spark-master
+    ports:
+      - "8081:8081"
+    environment:
+      SPARK_MODE: worker
+      SPARK_MASTER_URL: spark://spark-master:7077
+      SPARK_WORKER_MEMORY: 1024m
+      SPARK_WORKER_CORES: 2
+      SPARK_WORKER_WEBUI_PORT: 8081
+      SPARK_NO_DAEMONIZE: "true"
+    volumes:
+      - ./:/opt/app
+    mem_limit: 1536m
+    networks:
+      - hadoop-spark-net
+
+volumes:
+  namenode-data:
+  datanode1-data:
+
+networks:
+  hadoop-spark-net:
+    name: hadoop-spark-net
