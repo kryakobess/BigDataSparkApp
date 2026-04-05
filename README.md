@@ -5,9 +5,10 @@
 ## Состав проекта
 
 - `docker-compose.hadoop-1dn.yml` - стенд с `1 NameNode`, `1 DataNode`, `Spark Master`, `Spark Worker`
-- `docker-compose.hadoop-3dn.yml` - стенд с `1 NameNode`, `3 DataNode`, `Spark Master`, `Spark Worker`
+- `docker-compose.hadoop-3dn.yml` - стенд с `1 NameNode`, `3 DataNode`, `Spark Master`, `3 Spark Worker`
 - `main.py` - базовое Spark-приложение
 - `main_opt.py` - оптимизированное Spark-приложение
+- `prepare_parquet.py` - подготовка Parquet-версии датасета в HDFS
 - `scripts/run_1dn_baseline.sh` - запуск эксперимента `1 DataNode + baseline`
 - `scripts/run_1dn_optimized.sh` - запуск эксперимента `1 DataNode + optimized`
 - `scripts/run_3dn_baseline.sh` - запуск эксперимента `3 DataNode + baseline`
@@ -20,7 +21,7 @@
 Основные шаги выполнения:
 
 1. Создается `SparkSession`
-2. Из HDFS читается датасет `yellow_tripdata_2016-01.csv`
+2. Из HDFS читается подготовленный Parquet-датасет
 3. Выполняется очистка данных:
    - преобразование времени в `timestamp`
    - удаление строк с `null`
@@ -50,9 +51,23 @@
 - добавлен `persist(StorageLevel.MEMORY_AND_DISK)`
 - кэш материализуется заранее через `count()`
 - колонка `pickup_hour` вычисляется заранее, а не во время каждой агрегации
+- перед кэшированием оставляются только нужные для агрегаций колонки
 - в результирующий JSON дополнительно записываются параметры оптимизации
 
 `main_opt.py` нужен для сравнения с базовой версией и оценки эффекта оптимизации Spark-приложения.
+
+## Подготовка данных
+
+Для ускорения чтения эксперименты выполняются не по исходному CSV, а по Parquet-версии датасета.
+
+Сценарий такой:
+
+1. Исходный CSV загружается в HDFS
+2. Скрипт `prepare_parquet.py` читает CSV по явной схеме
+3. Dataset сохраняется в HDFS в формате Parquet
+4. `main.py` и `main_opt.py` запускаются уже на Parquet
+
+Это уменьшает накладные расходы на повторное чтение большого CSV и исключает дорогое `inferSchema`.
 
 ## Требования
 
@@ -140,8 +155,9 @@ docker compose -f docker-compose.hadoop-3dn.yml down
 2. Создает директорию `/data/nyc_taxi` в HDFS
 3. Загружает `yellow_tripdata_2016-01.csv` в HDFS
 4. Проверяет наличие файла в HDFS
-5. Ждет готовности `spark-master`
-6. Запускает `spark-submit` для нужного приложения
+5. При отсутствии Parquet подготавливает его через `prepare_parquet.py`
+6. Ждет готовности `spark-master`
+7. Запускает `spark-submit` для нужного приложения
 
 ## Где смотреть результаты
 

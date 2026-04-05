@@ -1,0 +1,482 @@
+{
+  "experiment_timestamp": "2026-04-05T21:28:28",
+  "app_name": "NYC Taxi Baseline 3DN",
+  "input_path": "hdfs://namenode:9000/data/nyc_taxi_parquet/yellow_tripdata_2016-01",
+  "spark_config": {
+    "executor_memory": "1g",
+    "driver_memory": "1g",
+    "shuffle_partitions": 8,
+    "log_level": "ERROR"
+  },
+  "total_duration_sec": 48.186,
+  "peak_driver_ram_mb": 38.82,
+  "steps": [
+    {
+      "step": "read_dataset",
+      "duration_sec": 5.854,
+      "driver_ram_mb": 38.2,
+      "finished_at": "2026-04-05T21:27:47"
+    },
+    {
+      "step": "prepare_dataset",
+      "duration_sec": 2.315,
+      "driver_ram_mb": 38.2,
+      "finished_at": "2026-04-05T21:27:50"
+    },
+    {
+      "step": "collect_metrics",
+      "duration_sec": 38.537,
+      "driver_ram_mb": 38.82,
+      "finished_at": "2026-04-05T21:28:28"
+    }
+  ],
+  "result_metrics": {
+    "total_rows_after_cleanup": 10837367,
+    "pickup_location_dimension": "pickup_zone_approx",
+    "distance_and_fare_stats": {
+      "avg_trip_distance": 4.676249830793785,
+      "min_trip_distance": 0.01,
+      "max_trip_distance": 8000010.0,
+      "avg_fare_amount": 12.445718326231846,
+      "std_trip_distance": 2990.637665829387,
+      "sum_total_amount": 168998803.79000515,
+      "avg_tip_amount": 1.7445916844932052
+    },
+    "rides_by_passenger_count": [
+      {
+        "passenger_count": 1,
+        "trip_count": 7671992
+      },
+      {
+        "passenger_count": 2,
+        "trip_count": 1553805
+      },
+      {
+        "passenger_count": 3,
+        "trip_count": 434595
+      },
+      {
+        "passenger_count": 4,
+        "trip_count": 209644
+      },
+      {
+        "passenger_count": 5,
+        "trip_count": 599093
+      },
+      {
+        "passenger_count": 6,
+        "trip_count": 368200
+      },
+      {
+        "passenger_count": 7,
+        "trip_count": 10
+      },
+      {
+        "passenger_count": 8,
+        "trip_count": 13
+      },
+      {
+        "passenger_count": 9,
+        "trip_count": 15
+      }
+    ],
+    "rides_by_pickup_hour": [
+      {
+        "pickup_hour": 18,
+        "trip_count": 688327
+      },
+      {
+        "pickup_hour": 19,
+        "trip_count": 679412
+      },
+      {
+        "pickup_hour": 20,
+        "trip_count": 621049
+      },
+      {
+        "pickup_hour": 21,
+        "trip_count": 604714
+      },
+      {
+        "pickup_hour": 17,
+        "trip_count": 588126
+      },
+      {
+        "pickup_hour": 22,
+        "trip_count": 577991
+      },
+      {
+        "pickup_hour": 15,
+        "trip_count": 560359
+      },
+      {
+        "pickup_hour": 14,
+        "trip_count": 559322
+      },
+      {
+        "pickup_hour": 12,
+        "trip_count": 532453
+      },
+      {
+        "pickup_hour": 13,
+        "trip_count": 528737
+      },
+      {
+        "pickup_hour": 16,
+        "trip_count": 507745
+      },
+      {
+        "pickup_hour": 11,
+        "trip_count": 499929
+      },
+      {
+        "pickup_hour": 9,
+        "trip_count": 489410
+      },
+      {
+        "pickup_hour": 8,
+        "trip_count": 488999
+      },
+      {
+        "pickup_hour": 23,
+        "trip_count": 478296
+      },
+      {
+        "pickup_hour": 10,
+        "trip_count": 478119
+      },
+      {
+        "pickup_hour": 7,
+        "trip_count": 402210
+      },
+      {
+        "pickup_hour": 0,
+        "trip_count": 392869
+      },
+      {
+        "pickup_hour": 1,
+        "trip_count": 297619
+      },
+      {
+        "pickup_hour": 6,
+        "trip_count": 234198
+      },
+      {
+        "pickup_hour": 2,
+        "trip_count": 226951
+      },
+      {
+        "pickup_hour": 3,
+        "trip_count": 167059
+      },
+      {
+        "pickup_hour": 4,
+        "trip_count": 123600
+      },
+      {
+        "pickup_hour": 5,
+        "trip_count": 109873
+      }
+    ],
+    "top_pickup_locations": [
+      {
+        "pickup_zone_approx": "-73.99",
+        "trip_count": 2489521
+      },
+      {
+        "pickup_zone_approx": "-73.98",
+        "trip_count": 2399068
+      },
+      {
+        "pickup_zone_approx": "-73.97",
+        "trip_count": 1434412
+      },
+      {
+        "pickup_zone_approx": "-74.0",
+        "trip_count": 1200481
+      },
+      {
+        "pickup_zone_approx": "-73.96",
+        "trip_count": 1023119
+      },
+      {
+        "pickup_zone_approx": "-74.01",
+        "trip_count": 668356
+      },
+      {
+        "pickup_zone_approx": "-73.95",
+        "trip_count": 656038
+      },
+      {
+        "pickup_zone_approx": "0.0",
+        "trip_count": 158434
+      },
+      {
+        "pickup_zone_approx": "-73.87",
+        "trip_count": 149382
+      },
+      {
+        "pickup_zone_approx": "-73.78",
+        "trip_count": 144141
+      }
+    ],
+    "revenue_by_payment_type": [
+      {
+        "payment_type": 1,
+        "trip_count": 7156324,
+        "avg_fare_amount": 12.914794152696276,
+        "total_revenue": 121737690.15110786
+      },
+      {
+        "payment_type": 2,
+        "trip_count": 3642482,
+        "avg_fare_amount": 11.505846216947663,
+        "total_revenue": 46647844.16024105
+      },
+      {
+        "payment_type": 3,
+        "trip_count": 28109,
+        "avg_fare_amount": 14.033580703689204,
+        "total_revenue": 441751.61000004876
+      },
+      {
+        "payment_type": 4,
+        "trip_count": 10451,
+        "avg_fare_amount": 14.548662328963731,
+        "total_revenue": 171506.0700000025
+      },
+      {
+        "payment_type": 5,
+        "trip_count": 1,
+        "avg_fare_amount": 10.0,
+        "total_revenue": 11.8
+      }
+    ],
+    "distance_by_vendor": [
+      {
+        "VendorID": 2,
+        "trip_count": 5805662,
+        "avg_trip_distance": 2.9727159107781174,
+        "avg_total_amount": 15.73060315448368
+      },
+      {
+        "VendorID": 1,
+        "trip_count": 5031705,
+        "avg_trip_distance": 6.641814613535506,
+        "avg_total_amount": 15.436564508636925
+      }
+    ],
+    "hourly_revenue": [
+      {
+        "pickup_hour": 18,
+        "total_revenue": 10485516.019997958,
+        "avg_trip_distance": 2.589688084297136,
+        "avg_tip_amount": 1.7205017963845954
+      },
+      {
+        "pickup_hour": 19,
+        "total_revenue": 10209662.750001526,
+        "avg_trip_distance": 2.639454351704121,
+        "avg_tip_amount": 1.7356235980524553
+      },
+      {
+        "pickup_hour": 20,
+        "total_revenue": 9596023.840000648,
+        "avg_trip_distance": 2.9187951997346304,
+        "avg_tip_amount": 1.830600838259171
+      },
+      {
+        "pickup_hour": 21,
+        "total_revenue": 9557414.35000003,
+        "avg_trip_distance": 3.0632361248457793,
+        "avg_tip_amount": 1.8791370135303826
+      },
+      {
+        "pickup_hour": 17,
+        "total_revenue": 9387157.650004398,
+        "avg_trip_distance": 3.8480826557574233,
+        "avg_tip_amount": 1.7569093867640662
+      },
+      {
+        "pickup_hour": 22,
+        "total_revenue": 9370815.229999723,
+        "avg_trip_distance": 6.113384256848329,
+        "avg_tip_amount": 1.9046203660610925
+      },
+      {
+        "pickup_hour": 14,
+        "total_revenue": 8951762.43000738,
+        "avg_trip_distance": 21.581621963734754,
+        "avg_tip_amount": 1.7084033705093196
+      },
+      {
+        "pickup_hour": 15,
+        "total_revenue": 8850315.640007613,
+        "avg_trip_distance": 2.891705388866777,
+        "avg_tip_amount": 1.705930126936509
+      },
+      {
+        "pickup_hour": 16,
+        "total_revenue": 8295577.500007736,
+        "avg_trip_distance": 2.912063161626394,
+        "avg_tip_amount": 1.7680193995017466
+      },
+      {
+        "pickup_hour": 13,
+        "total_revenue": 8049366.180008768,
+        "avg_trip_distance": 2.76743375250835,
+        "avg_tip_amount": 1.643707249539968
+      },
+      {
+        "pickup_hour": 23,
+        "total_revenue": 7971270.630005557,
+        "avg_trip_distance": 3.4028618261494947,
+        "avg_tip_amount": 1.8987312877381428
+      },
+      {
+        "pickup_hour": 12,
+        "total_revenue": 7877311.210008938,
+        "avg_trip_distance": 2.6099916800168392,
+        "avg_tip_amount": 1.616467087235894
+      },
+      {
+        "pickup_hour": 11,
+        "total_revenue": 7394316.180008047,
+        "avg_trip_distance": 5.901309345927113,
+        "avg_tip_amount": 1.6182909973216526
+      },
+      {
+        "pickup_hour": 9,
+        "total_revenue": 7206177.830007184,
+        "avg_trip_distance": 2.5347769354937455,
+        "avg_tip_amount": 1.7098434645798395
+      },
+      {
+        "pickup_hour": 8,
+        "total_revenue": 7174029.630007068,
+        "avg_trip_distance": 2.5404295918805735,
+        "avg_tip_amount": 1.7308195517782505
+      },
+      {
+        "pickup_hour": 10,
+        "total_revenue": 7122058.50000741,
+        "avg_trip_distance": 12.403349187127,
+        "avg_tip_amount": 1.6614634222861213
+      },
+      {
+        "pickup_hour": 0,
+        "total_revenue": 6417668.620005557,
+        "avg_trip_distance": 3.353027523169297,
+        "avg_tip_amount": 1.8215188014325583
+      },
+      {
+        "pickup_hour": 7,
+        "total_revenue": 5900468.810005681,
+        "avg_trip_distance": 2.8467337957783405,
+        "avg_tip_amount": 1.676766962532046
+      },
+      {
+        "pickup_hour": 1,
+        "total_revenue": 4717749.410003035,
+        "avg_trip_distance": 3.271329921812781,
+        "avg_tip_amount": 1.7281174588988233
+      },
+      {
+        "pickup_hour": 6,
+        "total_revenue": 3765419.4000020465,
+        "avg_trip_distance": 3.5559794276637726,
+        "avg_tip_amount": 1.784510499662692
+      },
+      {
+        "pickup_hour": 2,
+        "total_revenue": 3554936.1600014702,
+        "avg_trip_distance": 3.2760046001119267,
+        "avg_tip_amount": 1.6493106882102575
+      },
+      {
+        "pickup_hour": 3,
+        "total_revenue": 2708168.3700002544,
+        "avg_trip_distance": 3.5055846138190865,
+        "avg_tip_amount": 1.6058404515769946
+      },
+      {
+        "pickup_hour": 4,
+        "total_revenue": 2249391.519999628,
+        "avg_trip_distance": 4.172013268608416,
+        "avg_tip_amount": 1.6842476537216826
+      },
+      {
+        "pickup_hour": 5,
+        "total_revenue": 2186225.929999874,
+        "avg_trip_distance": 4.671595660444325,
+        "avg_tip_amount": 2.0859526908339627
+      }
+    ],
+    "vendor_payment_stats": [
+      {
+        "VendorID": 2,
+        "payment_type": 1,
+        "trip_count": 3832548,
+        "avg_fare_amount": 13.053193924772764,
+        "avg_trip_distance": 3.1307237691478886,
+        "total_revenue": 65889727.94026083
+      },
+      {
+        "VendorID": 1,
+        "payment_type": 1,
+        "trip_count": 3323776,
+        "avg_fare_amount": 12.75520946056533,
+        "avg_trip_distance": 4.389544842973817,
+        "total_revenue": 55847962.21016706
+      },
+      {
+        "VendorID": 2,
+        "payment_type": 2,
+        "trip_count": 1973114,
+        "avg_fare_amount": 11.591463007205865,
+        "avg_trip_distance": 2.665803739672457,
+        "total_revenue": 25436837.02981142
+      },
+      {
+        "VendorID": 1,
+        "payment_type": 2,
+        "trip_count": 1669368,
+        "avg_fare_amount": 11.404651221300501,
+        "avg_trip_distance": 10.18582020261553,
+        "total_revenue": 21211007.129834324
+      },
+      {
+        "VendorID": 1,
+        "payment_type": 3,
+        "trip_count": 28109,
+        "avg_fare_amount": 14.033580703689204,
+        "avg_trip_distance": 63.607993880964116,
+        "total_revenue": 441751.61000004876
+      },
+      {
+        "VendorID": 1,
+        "payment_type": 4,
+        "trip_count": 10451,
+        "avg_fare_amount": 14.548662328963731,
+        "avg_trip_distance": 3.6309635441584627,
+        "total_revenue": 171506.0700000025
+      },
+      {
+        "VendorID": 1,
+        "payment_type": 5,
+        "trip_count": 1,
+        "avg_fare_amount": 10.0,
+        "avg_trip_distance": 1.4,
+        "total_revenue": 11.8
+      }
+    ],
+    "distribution_stats": {
+      "trip_distance_p50": 1.7,
+      "trip_distance_p90": 6.56,
+      "fare_amount_p50": 9.0,
+      "fare_amount_p95": 33.5,
+      "tip_amount_p50": 1.26,
+      "tip_amount_p95": 5.96
+    }
+  }
+}

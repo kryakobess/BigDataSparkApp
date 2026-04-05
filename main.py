@@ -8,7 +8,21 @@ from datetime import datetime
 from typing import Any, Dict, List
 
 from pyspark.sql import DataFrame, SparkSession
-from pyspark.sql.functions import avg, col, count, hour, max as spark_max, min as spark_min, round as spark_round, to_timestamp
+from pyspark.sql.functions import (
+    avg,
+    expr,
+    col,
+    count,
+    hour,
+    max as spark_max,
+    min as spark_min,
+    round as spark_round,
+    stddev,
+    sum as spark_sum,
+    to_timestamp,
+)
+
+from dataset_schema import NYC_TAXI_SCHEMA
 
 try:
     import psutil
@@ -20,8 +34,8 @@ LOGGER = logging.getLogger("nyc-taxi-spark")
 SPARK_EVENT_LOG_DIR = "/tmp/spark-events"
 
 # Performance-related defaults for baseline experiment.
-DEFAULT_INPUT_PATH = "hdfs://namenode:9000/data/nyc_taxi/yellow_tripdata_2016-01.csv"
-DEFAULT_OUTPUT_DIR = "artifacts"
+DEFAULT_INPUT_PATH = "hdfs://namenode:9000/data/nyc_taxi_parquet/yellow_tripdata_2016-01"
+DEFAULT_OUTPUT_DIR = "/opt/app/artifacts"
 DEFAULT_APP_NAME = "NYC Taxi Trips Baseline"
 DEFAULT_EXECUTOR_MEMORY = "1g"
 DEFAULT_DRIVER_MEMORY = "1g"
@@ -133,11 +147,9 @@ def log_step_end(step_name: str, start_ts: float, step_metrics: List[Dict[str, A
 
 
 def read_dataset(spark: SparkSession, input_path: str) -> DataFrame:
-    return (
-        spark.read.option("header", "true")
-        .option("inferSchema", "true")
-        .csv(input_path)
-    )
+    if input_path.endswith(".csv"):
+        return spark.read.option("header", "true").schema(NYC_TAXI_SCHEMA).csv(input_path)
+    return spark.read.parquet(input_path)
 
 
 def prepare_dataset(df: DataFrame) -> DataFrame:
@@ -183,6 +195,9 @@ def collect_metrics(df: DataFrame) -> Dict[str, Any]:
             spark_min("trip_distance").alias("min_trip_distance"),
             spark_max("trip_distance").alias("max_trip_distance"),
             avg("fare_amount").alias("avg_fare_amount"),
+            stddev("trip_distance").alias("std_trip_distance"),
+            spark_sum("total_amount").alias("sum_total_amount"),
+            avg("tip_amount").alias("avg_tip_amount"),
         )
         .first()
         .asDict()
@@ -215,6 +230,72 @@ def collect_metrics(df: DataFrame) -> Dict[str, Any]:
         .collect()
     ]
 
+    revenue_by_payment_type = [
+        row.asDict()
+        for row in df.groupBy("payment_type")
+        .agg(
+            count("*").alias("trip_count"),
+            avg("fare_amount").alias("avg_fare_amount"),
+            spark_sum("total_amount").alias("total_revenue"),
+        )
+        .orderBy(col("total_revenue").desc())
+        .collect()
+    ]
+
+    distance_by_vendor = [
+        row.asDict()
+        for row in df.groupBy("VendorID")
+        .agg(
+            count("*").alias("trip_count"),
+            avg("trip_distance").alias("avg_trip_distance"),
+            avg("total_amount").alias("avg_total_amount"),
+        )
+        .orderBy(col("trip_count").desc())
+        .collect()
+    ]
+
+    hourly_revenue = [
+        row.asDict()
+        for row in df.withColumn("pickup_hour", hour("tpep_pickup_datetime_ts"))
+        .groupBy("pickup_hour")
+        .agg(
+            spark_sum("total_amount").alias("total_revenue"),
+            avg("trip_distance").alias("avg_trip_distance"),
+            avg("tip_amount").alias("avg_tip_amount"),
+        )
+        .orderBy(col("total_revenue").desc())
+        .collect()
+    ]
+
+    vendor_payment_stats = [
+        row.asDict()
+        for row in df.groupBy("VendorID", "payment_type")
+        .agg(
+            count("*").alias("trip_count"),
+            avg("fare_amount").alias("avg_fare_amount"),
+            avg("trip_distance").alias("avg_trip_distance"),
+            spark_sum("total_amount").alias("total_revenue"),
+        )
+        .orderBy(col("total_revenue").desc())
+        .collect()
+    ]
+
+    from pyspark.sql.functions import expr
+
+    distribution_stats = (
+        df.agg(
+            expr("percentile_approx(trip_distance, 0.5)").alias("trip_distance_p50"),
+            expr("percentile_approx(trip_distance, 0.9)").alias("trip_distance_p90"),
+            expr("percentile_approx(fare_amount, 0.5)").alias("fare_amount_p50"),
+            expr("percentile_approx(fare_amount, 0.95)").alias("fare_amount_p95"),
+            expr("percentile_approx(tip_amount, 0.5)").alias("tip_amount_p50"),
+            expr("percentile_approx(tip_amount, 0.95)").alias("tip_amount_p95"),
+        )
+        .first()
+        .asDict()
+    )
+
+
     return {
         "total_rows_after_cleanup": total_rows,
         "pickup_location_dimension": location_column,
@@ -222,6 +303,11 @@ def collect_metrics(df: DataFrame) -> Dict[str, Any]:
         "rides_by_passenger_count": rides_by_passenger_count,
         "rides_by_pickup_hour": rides_by_pickup_hour,
         "top_pickup_locations": top_pickup_locations,
+        "revenue_by_payment_type": revenue_by_payment_type,
+        "distance_by_vendor": distance_by_vendor,
+        "hourly_revenue": hourly_revenue,
+        "vendor_payment_stats": vendor_payment_stats,
+        "distribution_stats": distribution_stats,
     }
 
 
