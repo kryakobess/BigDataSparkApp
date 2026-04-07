@@ -2,7 +2,7 @@
 
 Проект для проведения 4 экспериментов с Hadoop HDFS и Spark на датасете NYC Taxi Trips.
 
-## Состав проекта
+### Состав проекта
 
 - `docker/spark/Dockerfile` - обогащенный необходимыми для сбора метрик python зависимости контейнер для spark
 - `docker-compose.hadoop-1dn.yml` - стенд с `1 NameNode`, `1 DataNode`, `Spark Master`, `Spark Worker`
@@ -15,7 +15,7 @@
 - `scripts/run_3dn_baseline.sh` - запуск эксперимента `3 DataNode + baseline`
 - `scripts/run_3dn_optimized.sh` - запуск эксперимента `3 DataNode + optimized`
 
-## Что делает main.py
+### Что делает main.py
 
 Файл `main.py` реализует базовое Spark-приложение для эксперимента без оптимизаций.
 
@@ -40,7 +40,7 @@
 
 Это baseline-версия приложения, которая используется как базовая точка сравнения.
 
-## Основные отличия main_opt.py
+### Основные отличия main_opt.py
 
 Файл `main_opt.py` содержит оптимизированную версию того же Spark-приложения.
 
@@ -57,7 +57,7 @@
 
 `main_opt.py` нужен для сравнения с базовой версией и оценки эффекта оптимизации Spark-приложения.
 
-## Подготовка данных
+### Подготовка данных
 
 Для ускорения чтения эксперименты выполняются не по исходному CSV, а по Parquet-версии датасета.
 
@@ -70,13 +70,7 @@
 
 Это уменьшает накладные расходы на повторное чтение большого CSV и исключает дорогое `inferSchema`.
 
-## Требования
-
-Для работы проекта необходим датасет `yellow_tripdata_2016-01.csv`, который можно скачать здесь:
-https://www.kaggle.com/datasets/elemento/nyc-yellow-taxi-trip-data?select=yellow_tripdata_2016-01.csv
-
-
-## Общая схема экспериментов
+### Общая схема экспериментов
 
 Нужно выполнить 4 запуска:
 
@@ -95,6 +89,12 @@ https://www.kaggle.com/datasets/elemento/nyc-yellow-taxi-trip-data?select=yellow
 6. Остановить стенд через `docker compose down`
 
 ## Алгоритм запуска экспериментов
+
+### Требования
+
+Для работы проекта необходим датасет `yellow_tripdata_2016-01.csv`, который можно скачать здесь:
+https://www.kaggle.com/datasets/elemento/nyc-yellow-taxi-trip-data?select=yellow_tripdata_2016-01.csv
+
 
 ### Эксперименты для стенда с 1 DataNode
 
@@ -148,7 +148,7 @@ docker compose -f docker-compose.hadoop-3dn.yml up -d
 docker compose -f docker-compose.hadoop-3dn.yml down
 ```
 
-## Что делают sh-скрипты
+### Что делают sh-скрипты
 
 Каждый скрипт автоматически:
 
@@ -160,7 +160,7 @@ docker compose -f docker-compose.hadoop-3dn.yml down
 6. Ждет готовности `spark-master`
 7. Запускает `spark-submit` для нужного приложения
 
-## Где смотреть результаты
+### Где смотреть результаты
 
 После выполнения экспериментов результаты сохраняются в локальную папку:
 
@@ -178,7 +178,7 @@ docker compose -f docker-compose.hadoop-3dn.yml down
 - оценка использования памяти драйвера
 - вычисленные агрегаты по датасету
 
-## Веб-интерфейсы
+### Веб-интерфейсы
 
 После старта контейнеров доступны:
 
@@ -186,7 +186,7 @@ docker compose -f docker-compose.hadoop-3dn.yml down
 - Spark Master UI: [http://localhost:8080](http://localhost:8080)
 - Spark Worker UI: [http://localhost:8081](http://localhost:8081)
 
-## Важное замечание
+### Важное замечание
 
 Одновременно нужно запускать только один compose-файл:
 
