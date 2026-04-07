@@ -1,33 +1,41 @@
 {
-  "experiment_timestamp": "2026-04-05T21:28:28",
-  "app_name": "NYC Taxi Baseline 3DN",
+  "experiment_timestamp": "2026-04-07T12:00:14",
+  "app_name": "NYC Taxi Optimized 1DN",
   "input_path": "hdfs://namenode:9000/data/nyc_taxi_parquet/yellow_tripdata_2016-01",
   "spark_config": {
     "executor_memory": "1g",
     "driver_memory": "1g",
-    "shuffle_partitions": 8,
-    "log_level": "ERROR"
+    "shuffle_partitions": 4,
+    "log_level": "ERROR",
+    "target_partitions": 4,
+    "adaptive_query_execution": true
   },
-  "total_duration_sec": 48.186,
-  "peak_driver_ram_mb": 38.82,
+  "total_duration_sec": 52.228,
+  "peak_driver_ram_mb": 38.49,
   "steps": [
     {
       "step": "read_dataset",
-      "duration_sec": 5.854,
-      "driver_ram_mb": 38.2,
-      "finished_at": "2026-04-05T21:27:47"
+      "duration_sec": 6.564,
+      "driver_ram_mb": 37.86,
+      "finished_at": "2026-04-07T11:59:30"
     },
     {
       "step": "prepare_dataset",
-      "duration_sec": 2.315,
-      "driver_ram_mb": 38.2,
-      "finished_at": "2026-04-05T21:27:50"
+      "duration_sec": 1.895,
+      "driver_ram_mb": 37.86,
+      "finished_at": "2026-04-07T11:59:32"
+    },
+    {
+      "step": "optimize_dataset",
+      "duration_sec": 15.771,
+      "driver_ram_mb": 37.86,
+      "finished_at": "2026-04-07T11:59:47"
     },
     {
       "step": "collect_metrics",
-      "duration_sec": 38.537,
-      "driver_ram_mb": 38.82,
-      "finished_at": "2026-04-05T21:28:28"
+      "duration_sec": 26.462,
+      "driver_ram_mb": 38.49,
+      "finished_at": "2026-04-07T12:00:14"
     }
   ],
   "result_metrics": {

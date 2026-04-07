@@ -1,0 +1,5 @@
+label	app_name	total_duration_sec	peak_driver_ram_mb	shuffle_partitions	target_partitions	artifact
+1DN Baseline	NYC Taxi Baseline 1DN	58.888	38.23	4		artifacts/experiment_20260407_114517.json
+1DN Optimized	NYC Taxi Optimized 1DN	52.228	38.49	4	4	artifacts/experiment_opt_20260407_120014.json
+3DN Baseline	NYC Taxi Baseline 3DN	50.674	38.07	4		artifacts/experiment_20260407_113642.json
+3DN Optimized	NYC Taxi Optimized 3DN	55.95	38.27	8	4	artifacts/experiment_opt_20260407_121216.json
