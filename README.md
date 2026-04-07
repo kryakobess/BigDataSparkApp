@@ -4,6 +4,7 @@
 
 ## Состав проекта
 
+- `docker/spark/Dockerfile` - обогащенный необходимыми для сбора метрик python зависимости контейнер для spark
 - `docker-compose.hadoop-1dn.yml` - стенд с `1 NameNode`, `1 DataNode`, `Spark Master`, `Spark Worker`
 - `docker-compose.hadoop-3dn.yml` - стенд с `1 NameNode`, `3 DataNode`, `Spark Master`, `3 Spark Worker`
 - `main.py` - базовое Spark-приложение
